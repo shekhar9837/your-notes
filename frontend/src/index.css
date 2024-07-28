@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+@layer components {
+    .input-label {
+        @apply text-sm text-slate-950;
+    }
+}   
