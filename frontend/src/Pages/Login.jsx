@@ -1,13 +1,15 @@
 import React, { useState } from 'react'
-import {Link, NavLink} from "react-router-dom"
+import {Link, useNavigate} from "react-router-dom"
 import InputPassword from '../components/InputPassword'
 import { validateEmail } from '../Utils/helper'
 import NoteCard from '../components/Cards/NoteCard'
+import axiosInstance from '../Utils/axiosInstance'
 
 const Login = () => {
     const [email, setEmail] = useState("")
     const [password, setPassword] =useState("")
     const [error, setError] = useState(null);
+    const navigate = useNavigate()
 
     const handleLogin = async(e)=>{
         e.preventDefault()
@@ -22,6 +24,25 @@ const Login = () => {
             return
         }
         setError("")
+
+        try{
+          const response = await axiosInstance.post("/signin", {
+            email:email,
+            password:password
+          })
+          if(response.data && response.data.accessToken){
+            localStorage.setItem("token", response.data.accessToken)
+            navigate("/dashboard")
+          }
+
+        }catch(e){
+          if(error.response && error.response.data && error.response.data.message){
+            setError(error.response.data.message)
+          }
+          else {
+            setError("An unexpected error occurred. Please try again.")
+          }
+        }
     }
 
 
@@ -55,7 +76,7 @@ const Login = () => {
 
         <div>
           <button
-            // type="submit"
+            type="submit"
             className="flex w-full justify-center rounded-md bg-button px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           >
             Sign in

@@ -30,7 +30,7 @@ app.post("/create-account", async (req, res) => {
 
     const userExists = await User.findOne({ email });
     if (userExists) {
-        return res.status(400).json({ error: true, message: "User already exists" });
+        return res.status(409).json({ error: true, message: "User already exists" });
     }
 
     const user = new User({ fullName, email, password });
@@ -78,6 +78,29 @@ app.post("/signin", async (req, res) => {
     }
 });
 
+
+app.get("/get-user", authMiddleware, async function(req, res) {
+    const { user } = req.user; // Assuming req.user contains the decoded token
+
+    // Find the user in the database
+    const isUser = await User.findOne({ _id: user._id });
+    if (!isUser) {
+        return res.status(401).json({ error: true, message: "Unauthorized" });
+    }
+
+    // Return a 200 status with the user information if found
+    return res.status(200).json({
+        user: {
+            fullName: isUser.fullName,
+            email: isUser.email,
+            _id: isUser._id,
+            createdOn: isUser.createdOn,
+        },
+        message: "User information retrieved successfully",
+    });
+});
+
+
 app.post("/add-note", authMiddleware, async (req, res) => {
     const { title, content, tags } = req.body;
     const { user } = req.user;
@@ -92,6 +115,7 @@ app.post("/add-note", authMiddleware, async (req, res) => {
             content,
             tags: tags || [],
             userId: user._id
+
         });
         await note.save();
 
@@ -185,7 +209,7 @@ app.put("update-note-pinned/:noteId", async (req, res) => {
             return res.json({ error: true, message: "Note not found" });
         }
 
-        if(isPinned) note.isPinned = isPinned;
+        if(isPinned) note.isPinned = isPinned || false;
 
         await note.save();
         return res.json({ error: false, message: "Note updated successfully", note });
@@ -194,6 +218,29 @@ app.put("update-note-pinned/:noteId", async (req, res) => {
     }
 })
 
+
+app.get("/search-notes/",authMiddleware, async function(req, res){
+    const {user} = req.user;
+    const { query } = req.query;  
+
+    if(!query){
+        return res.json({ error: true, message: "No search query provided" });
+    }
+
+    try{
+        const matchingNotes = await  UserNotes.find({
+            userId: user._id,
+            $or:[
+                {title: { $regex: new RegExp(query, "i")}},
+                {content: { $regex: new RegExp(query, "i")}}   
+            ]
+        })
+
+        return res.json({ error: false, notes: matchingNotes, message: "Notes retrieved successfully"});
+    }catch (e) {
+        return res.status(500).json({ error: true, message: "Internal Server Error" });
+    }
+})
 
 
 

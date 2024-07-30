@@ -1,13 +1,17 @@
 import React, { useState } from 'react'
 import InputPassword from '../components/InputPassword'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { validateEmail } from '../Utils/helper'
+import axiosInstance from '../Utils/axiosInstance'
+
 
 const Signup = () => {
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] =useState("")
   const [error, setError] = useState(null);
+  const navigate =useNavigate()
+
   const handleLogin = async(e)=>{
    
     e.preventDefault()
@@ -27,6 +31,31 @@ const Signup = () => {
         return
     }
     setError("")
+
+    try{
+      const response = await axiosInstance.post("/create-account", {
+        fullName: name,
+        email:email,
+        password:password
+      })
+      if(response.data && response.data.error){
+        setError(response.data.message)
+        return
+      }
+      if(response.data && response.data.accessToken){
+        localStorage.setItem("token", response.data.accessToken)
+        navigate("/dashboard")
+      }
+
+    }catch (e) {
+      if (e.response && e.response.status === 409) {
+        setError("User already exists.");
+      } else if (e.response && e.response.data && e.response.data.message) {
+        setError(e.response.data.message);
+      } else {
+        setError("An unexpected error occurred. Please try again.");
+      }
+    }
 }
 
   return (
@@ -52,7 +81,7 @@ const Signup = () => {
               placeholder='Email'
               className="block w-full rounded-md border-0 py-1.5 px-2 my-6 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
             />
-           <InputPassword />
+           <InputPassword value={password} onChange={(e)=> setPassword(e.target.value)} />
 
             {error && <p className='text-sm text-red-500 pb-1'>{error}</p>}
           </div>
@@ -61,7 +90,7 @@ const Signup = () => {
 
         <div>
           <button
-            // type="submit"
+            type="submit"
             className="flex w-full justify-center rounded-md bg-button px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           >
             Create Account
@@ -71,7 +100,7 @@ const Signup = () => {
 
       <p className="mt-10 text-center text-sm text-gray-500">
        Already have an Account?{" "}
-       <Link to="/login" className='font-medium text-button underline'>
+       <Link to="/signin" className='font-medium text-button underline'>
       LogIn
        </Link>
     

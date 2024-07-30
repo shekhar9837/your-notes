@@ -13,6 +13,8 @@ const NoteCard = ({
   onDelete,
   onPinNote,
 }) => {
+
+
   return (
     <div
       className={`w-80 flex p-4 border rounded-lg shadow-md ${
@@ -26,8 +28,9 @@ const NoteCard = ({
         <p className="mt-2">{content}</p>
         <div className="mt-4">
           <p className="text-sm text-gray-500">
-            Date: {new Date(date).toLocaleDateString()}
+           Date: {new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
           </p>
+
           <div className="flex flex-wrap gap-2 mt-2">
             {tags &&
               tags.map((tag, index) => (
