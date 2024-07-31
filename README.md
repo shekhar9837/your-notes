@@ -13,20 +13,19 @@
 </p>
 
 <p align="left"> 
-## Features
-- Add Notes: Users can add notes linked to specific YouTube videos.
-- View Notes: Users can view a list of all their notes.
-- Edit Notes: Users can edit their existing notes.
-- Delete Notes: Users can delete notes they no longer need.
-- Search: Users can search and filter notes for quick access.
+##Features
+-Add Notes: Users can add notes linked to specific YouTube videos.
+-View Notes: Users can view a list of all their notes.
+-Edit Notes: Users can edit their existing notes.
+-Delete Notes: Users can delete notes they no longer need.
+-Search: Users can search and filter notes for quick access.
 </p>
 
 <p align="left">
-## Built with:
-- Frontend: React.js, Tailwind CSS,
-- Backend: Node.js, Express.js
-- Database: MongoDB
-- Deployment: Vite
+##Tech Stack
+-Frontend: React.js, Tailwind CSS,
+-Backend: Node.js, Express.js
+-Database: MongoDB
 </p>
 
 <h2 align="center">Screenshots of the Project 📸</h2>
