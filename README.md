@@ -12,23 +12,21 @@
   👉 <a href="https://your-notess.vercel.app/">Live Demo</a>
 </p>
 
-<p align="left> 
+<p align="left"> 
 ## Features
-
-- **Add Notes**: Users can add notes linked to specific YouTube videos.
-- **View Notes**: Users can view a list of all their notes.
-- **Edit Notes**: Users can edit their existing notes.
-- **Delete Notes**: Users can delete notes they no longer need.
-- **Search and Filter**: Users can search and filter notes for quick access.
+- Add Notes: Users can add notes linked to specific YouTube videos.
+- View Notes: Users can view a list of all their notes.
+- Edit Notes: Users can edit their existing notes.
+- Delete Notes: Users can delete notes they no longer need.
+- Search: Users can search and filter notes for quick access.
 </p>
 
-<h3 align="left">Built with:</h3>
 <p align="left">
-- **Frontend**: React.js, HTML, CSS, Tailwind CSS, React Router, React Icons
-- **Backend**: Node.js, Express.js
-- **Database**: MongoDB
-- **Validation**: Zod
-- **Deployment**: Vite
+## Built with:
+- Frontend: React.js, Tailwind CSS,
+- Backend: Node.js, Express.js
+- Database: MongoDB
+- Deployment: Vite
 </p>
 
 <h2 align="center">Screenshots of the Project 📸</h2>
