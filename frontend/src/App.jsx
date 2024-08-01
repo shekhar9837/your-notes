@@ -4,6 +4,9 @@ import Signup from "./Pages/Signup";
 import Navbar from "./components/Navbar";
 import { Dashboard } from "./Pages/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
+import { inject } from '@vercel/analytics';
+ 
+inject();
 
 function App() {
     return (
